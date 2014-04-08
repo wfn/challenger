@@ -13,7 +13,7 @@ def query(resource, params):
 
   r = requests.get(url, params=params)
   if r.status_code == 200:
-    return r.json
+    return r.json()
   else:
     raise OnionooError('Onionoo replied with error: %s (%s)' % (
                        r.status_code, r.reason))
