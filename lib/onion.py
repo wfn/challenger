@@ -6,7 +6,7 @@ class OnionooError(Exception):
 
 def query(resource, params):
   if not resource in ['summary', 'details', 'bandwidth', 'weights',
-                      'clients', 'uptimes']:
+                      'clients', 'uptime']:
     raise OnionooError('Invalid query (Unknown document)')
 
   url = 'https://onionoo.torproject.org/%s' % (resource,)
