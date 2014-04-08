@@ -80,7 +80,7 @@ def read_documents_from_disk(resource_name, fingerprints):
             document_file = open(document_path)
             document_content = document_file.read()
             document_file.close()
-            downloads.append(document_content)
+            downloads.append(json.loads(document_content))
     return downloads
 
 def combine_downloads(downloads):
@@ -95,8 +95,7 @@ def combine_downloads(downloads):
     and bridges.
     """
     documents = []
-    for download in downloads:
-        download_dict = json.loads(download)
+    for download_dict in downloads:
         documents.extend(download_dict['relays'])
         documents.extend(download_dict['bridges'])
     return combine_documents(documents)
