@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import urllib2
 import json
 import optparse
 import os
@@ -67,22 +66,10 @@ def read_fingerprints(fingerprints_path):
 
 def download_and_combine_documents(out_path, resource_name, fingerprints):
     # TODO put me in after testing
-    downloads = download_documents(resource_name, fingerprints)
-    #downloads = read_documents_from_disk(resource_name, fingerprints)
+    #downloads = download_documents(resource_name, fingerprints)
+    downloads = read_documents_from_disk(resource_name, fingerprints)
     combined_document = combine_downloads(downloads)
     write_combined_document_to_disk(out_path, combined_document)
-
-def download_documents(resource_name, fingerprints):
-    downloads = []
-    for fingerprint in fingerprints:
-        request = 'https://onionoo.torproject.org/%s?lookup=%s' % (
-                   resource_name, fingerprint, )
-        try:
-            response = urllib2.urlopen(request)
-        except urllib2.HTTPError, error:
-            print("Error " + str(error.code) + ": " + error.reason)
-        downloads.append(response.read())
-    return downloads
 
 def read_documents_from_disk(resource_name, fingerprints):
     # TODO Take me out after testing
