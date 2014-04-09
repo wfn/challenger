@@ -4,18 +4,27 @@ import optparse
 import os
 import sys
 from datetime import timedelta, datetime
+import time
 from lib.onion import download_documents
 
+SLEEP_BETWEEN_DOCUMENTS = 7.0 # this is what happens if we're downloading for
+                              # >1000 fingerprints and we don't sleep now and
+                              # then:
+                              # "lib.onion.OnionooError: Onionoo replied with"
+                              # "error: 502 (Proxy Error)"
 
 def main():
     options = parse_options()
     fingerprints = read_fingerprints(options.in_fingerprints)
     download_and_combine_documents(options.out_bandwidth, 'bandwidth',
                                    fingerprints)
+    time.sleep(SLEEP_BETWEEN_DOCUMENTS)
     download_and_combine_documents(options.out_weights, 'weights',
                                    fingerprints)
+    time.sleep(SLEEP_BETWEEN_DOCUMENTS)
     download_and_combine_documents(options.out_clients, 'clients',
                                    fingerprints)
+    time.sleep(SLEEP_BETWEEN_DOCUMENTS)
     download_and_combine_documents(options.out_uptime, 'uptime',
                                    fingerprints)
 

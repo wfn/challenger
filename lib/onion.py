@@ -1,5 +1,9 @@
 import requests
 import json
+import time
+
+SLEEP_TIME = 0.25
+SLEEP_THRESHOLD = 100
 
 class OnionooError(Exception):
   pass
@@ -20,7 +24,11 @@ def query(resource, params):
 
 def download_documents(resource_name, fingerprints):
   downloads = []
+  do_sleep = (len(fingerprints) > SLEEP_THRESHOLD)
   for fingerprint in fingerprints:
     doc = query(resource_name, {'lookup':fingerprint})
     downloads.append(doc)
+    if do_sleep: # if there are lots of fingerprints to look up, it's a good
+                 # idea to not rush, and to have Onionoo take a breath.
+      time.sleep(SLEEP_TIME)
   return downloads
